@@ -1,28 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Lab_Work_1___Class
+namespace GeometricFigureApp   
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private GeometricFigure figure; 
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Обработчик события нажатия кнопки "Создать фигуру".
+        /// </summary>
+        /// <param name="sender">Тот, от кого исходит действие(сама кнопка).</param>
+        /// <param name="e"></param>
+        private void btnCreate_Click(object sender, RoutedEventArgs e) 
+        {
+            try
+            {
+                // Считываем и парсим значения из текстовых полей
+                double a = double.Parse(txtA.Text);
+                double b = double.Parse(txtB.Text);
+                double x = double.Parse(txtX.Text);
+                double y = double.Parse(txtY.Text);
+
+                figure = new GeometricFigure(a, b, x, y); // Создаем новый объект GeometricFigure
+
+                // Обновляем представление прямоугольника на Canvas
+                Canvas.SetLeft(rect, figure.X);
+                Canvas.SetTop(rect, figure.Y);
+                rect.Width = figure.SideA;
+                rect.Height = figure.SideB;
+
+                txtInfo.Text = $"Площадь: {figure.CalculateArea():F2}   |   Периметр: {figure.CalculatePerimeter():F2}"; // Отображаем площадь и периметр
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning); // Показываем сообщение об ошибке
+            }
         }
     }
 }
