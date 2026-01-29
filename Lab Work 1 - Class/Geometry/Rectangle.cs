@@ -3,18 +3,47 @@
 namespace GeometricFigureApp
 {
 
-    // Класс Геометрическая фигура (прямоугольник)
-    // Поддерживает задание сторон, координат на плоскости
-    // Вычисление площади и периметра
+    /// <summary>
+    /// Представляет геометрическую фигуру — прямоугольник, расположенный на плоскости.
+    /// </summary>
     public class GeometricFigure
     {
-        // Приватные поля для инкапсуляции
-        private double _sideA; // Длина стороны A
-        private double _sideB; // Длина стороны B
-        private double _x;     // Координата X 
-        private double _y;     // Координата Y
+        #region Поля (приватные, для инкапсуляции)
 
-        // Конструктор с параметрами.
+        /// <summary>
+        /// Длина стороны A (ширина прямоугольника)
+        /// </summary>
+        private double _sideA;
+
+        /// <summary>
+        /// Длина стороны B (высота прямоугольника)
+        /// </summary>
+        private double _sideB;
+
+        /// <summary>
+        /// Координата X левого верхнего угла прямоугольника
+        /// </summary>
+        private double _x;
+
+        /// <summary>
+        /// Координата Y левого верхнего угла прямоугольника
+        /// </summary>
+        private double _y;
+
+        #endregion
+
+        #region Конструктор
+
+        /// <summary>
+        /// Создает новый экземпляр класса GeometricFigure с заданными сторонами и координатами.
+        /// </summary>
+        /// <param name="sideA">Длина стороны А (ширина). Должна быть больше 0.</param>
+        /// <param name="sideB">Длина стороны В (высота). Должна быть больше 0.</param>
+        /// <param name="x">Кооридината X левого верхнего угла.</param>
+        /// <param name="y">Кооридината Y левого верхнего угла.</param>
+        /// <exception cref="ArgumentException">
+        /// Выбрасывается, если sideA или sideB меньше или равны нулю.
+        /// </exception>
         public GeometricFigure(double sideA, double sideB, double x, double y)
         {
             if (sideA <= 0 || sideB <= 0)
@@ -26,7 +55,17 @@ namespace GeometricFigureApp
             _y = y;
         }
 
-        // Свойства для доступа и изменения данных с валидацией
+        #endregion
+
+        #region Свойства
+
+        /// <summary>
+        /// Получает или задает длину стороны A (ширина прямоугольника).
+        /// </summary>
+        /// <value>Должна быть больше 0.</value>
+        /// <exception cref="ArgumentException">
+        /// При попытке установить значение меньше или равное нулю.
+        /// </exception>
         public double SideA // Свойство для стороны A
         {
             get => _sideA; // Геттер
@@ -38,6 +77,13 @@ namespace GeometricFigureApp
             }
         }
 
+        /// <summary>
+        /// Получает или задает длину стороны B (высота прямоугольника).
+        /// </summary>
+        /// <value>Должна быть больше 0.</value>
+        /// <exception cref="ArgumentException">
+        /// При попытке установить значение меньше или равное нулю.
+        /// </exception>
         public double SideB // Свойство для стороны B
         {
             get => _sideB; // Геттер
@@ -49,36 +95,58 @@ namespace GeometricFigureApp
             }
         }
 
+        /// <summary>
+        /// Получает или задает координату X левого верхнего угла прямоугольника.
+        /// </summary>
         public double X // Свойство для координаты X
         {
             get => _x; // Геттер
             set => _x = value; // Сеттер
         }
 
+        /// <summary>
+        /// Получает или задает координату Y левого верхнего угла прямоугольника.
+        /// </summary>
         public double Y // Свойство для координаты Y
         {
             get => _y; // Геттер
             set => _y = value; // Сеттер
         }
 
-        // Метод для вычисления периметра
+        #endregion
+
+        #region Методы
+
+        /// <summary>
+        /// Вычисляет периметр прямоугольника.
+        /// </summary>
+        /// <returns>Периметр</returns>
         public double CalculatePerimeter()
         {
             return 2 * (_sideA + _sideB); 
         }
 
-        // Метод для вычисления площади
+        /// <summary>
+        /// Вычисляет площадь прямоугольника.
+        /// </summary>
+        /// <returns>Площадь</returns>
         public double CalculateArea()
         {
             return _sideA * _sideB;
         }
 
-        // Метод для перемещения фигуры
+        /// <summary>
+        /// Перемещает прямоугольник на заданные смещения по осям X и Y.
+        /// </summary>
+        /// <param name="deltaX">Смещение по горизонтали.</param>
+        /// <param name="deltaY">Смещение по вертикали</param>
         public void Move(double deltaX, double deltaY)
         {
             X += deltaX;
             Y += deltaY;
         }
+
+        #endregion
 
     }
 }
