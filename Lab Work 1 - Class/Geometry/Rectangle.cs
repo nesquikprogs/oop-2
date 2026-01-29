@@ -61,5 +61,24 @@ namespace GeometricFigureApp
             set => _y = value; // Сеттер
         }
 
+        // Метод для вычисления периметра
+        public double CalculatePerimeter()
+        {
+            return 2 * (_sideA + _sideB); 
+        }
+
+        // Метод для вычисления площади
+        public double CalculateArea()
+        {
+            return _sideA * _sideB;
+        }
+
+        // Метод для перемещения фигуры
+        public void Move(double deltaX, double deltaY)
+        {
+            X += deltaX;
+            Y += deltaY;
+        }
+
     }
 }
