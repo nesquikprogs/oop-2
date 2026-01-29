@@ -1,0 +1,29 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# Build results
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Publish / deployment
+*.pubxml
+App.publish/
+PublishProfiles/
+
+# Logs and temp
+*.log
+*.tmp
+
+# Designer generated
+*.g.cs
+*.g.i.cs
