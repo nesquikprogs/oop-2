@@ -32,10 +32,7 @@
 
         <!-- Canvas с фигурой -->
         <Canvas Grid.Row="1" Background="#F0F0F0" x:Name="canvas">
-            <Rectangle x:Name="rect" 
-                       Fill="LightBlue" 
-                       Stroke="Black" 
-                       StrokeThickness="2"/>
+            <Rectangle x:Name="rect" Height="2" Canvas.Left="-68" Canvas.Top="26" Width="2" Fill="#FF9400FF" Stroke="Black"/>
         </Canvas>
 
         <!-- Инфо -->

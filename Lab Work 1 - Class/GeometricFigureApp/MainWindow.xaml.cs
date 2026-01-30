@@ -31,10 +31,10 @@ namespace Rectangle
                 rectangle = new Rectangle(a, b, x, y); // Создаем новый объект GeometricFigure
 
                 // Обновляем представление прямоугольника на Canvas
-                Canvas.SetLeft(rect, rectangle.X);
-                Canvas.SetTop(rect, rectangle.Y);
-                rect.Width = rectangle.SideA;
-                rect.Height = rectangle.SideB;
+                Canvas.SetLeft(rect, rectangle.X); // Устанавливаем позицию по X
+                Canvas.SetTop(rect, rectangle.Y); // Устанавливаем позицию по Y
+                rect.Width = rectangle.SideA; // Устанавливаем ширину
+                rect.Height = rectangle.SideB; // Устанавливаем высоту
 
                 txtInfo.Text = $"Площадь: {rectangle.CalculateArea():F2}   |   Периметр: {rectangle.CalculatePerimeter():F2}"; // Отображаем площадь и периметр
             }
