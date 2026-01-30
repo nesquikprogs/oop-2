@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace GeometricFigureApp
+namespace Rectangle
 {
 
     /// <summary>
     /// Представляет геометрическую фигуру — прямоугольник, расположенный на плоскости.
     /// </summary>
-    public class GeometricFigure
+    public class Rectangle
     {
         #region Поля (приватные, для инкапсуляции)
 
@@ -44,7 +44,7 @@ namespace GeometricFigureApp
         /// <exception cref="ArgumentException">
         /// Выбрасывается, если sideA или sideB меньше или равны нулю.
         /// </exception>
-        public GeometricFigure(double sideA, double sideB, double x, double y)
+        public Rectangle(double sideA, double sideB, double x, double y)
         {
             if (sideA <= 0 || sideB <= 0)
                 throw new ArgumentException("Стороны должны быть положительными числами.");

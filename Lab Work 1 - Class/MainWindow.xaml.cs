@@ -2,11 +2,11 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace GeometricFigureApp   
+namespace Rectangle   
 {
     public partial class MainWindow : Window
     {
-        private GeometricFigure figure; 
+        private Rectangle figure; 
 
         public MainWindow()
         {
@@ -28,7 +28,7 @@ namespace GeometricFigureApp
                 double x = double.Parse(txtX.Text);
                 double y = double.Parse(txtY.Text);
 
-                figure = new GeometricFigure(a, b, x, y); // Создаем новый объект GeometricFigure
+                figure = new Rectangle(a, b, x, y); // Создаем новый объект GeometricFigure
 
                 // Обновляем представление прямоугольника на Canvas
                 Canvas.SetLeft(rect, figure.X);
