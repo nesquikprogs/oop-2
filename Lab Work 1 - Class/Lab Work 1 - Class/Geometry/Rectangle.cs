@@ -120,7 +120,7 @@ namespace Rectangle
         /// <summary>
         /// Вычисляет периметр прямоугольника.
         /// </summary>
-        /// <returns>Периметр</returns>
+        /// <returns>Периметр прямоугольника(2*(A+B))</returns>
         public double CalculatePerimeter()
         {
             return 2 * (_sideA + _sideB); 
@@ -129,14 +129,14 @@ namespace Rectangle
         /// <summary>
         /// Вычисляет площадь прямоугольника.
         /// </summary>
-        /// <returns>Площадь</returns>
+        /// <returns>Площадь прямоугольника(A*B)</returns>
         public double CalculateArea()
         {
             return _sideA * _sideB;
         }
 
         /// <summary>
-        /// Перемещает прямоугольник на заданные смещения по осям X и Y.
+        /// Перемещает прямоугольник(его левый верхний угол) на заданные смещения по осям X и Y.
         /// </summary>
         /// <param name="deltaX">Смещение по горизонтали.</param>
         /// <param name="deltaY">Смещение по вертикали</param>

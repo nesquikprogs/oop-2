@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rectangle;  // ← твой namespace
+using Rectangle;  
 
 namespace GeometricFigureTests
 {
