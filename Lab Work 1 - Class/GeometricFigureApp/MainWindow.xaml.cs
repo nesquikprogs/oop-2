@@ -4,9 +4,9 @@ using System.Windows.Controls;
 
 namespace Rectangle   
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window 
     {
-        private Rectangle figure; 
+        private Rectangle rectangle; 
 
         public MainWindow()
         {
@@ -16,8 +16,8 @@ namespace Rectangle
         /// <summary>
         /// Обработчик события нажатия кнопки "Создать фигуру".
         /// </summary>
-        /// <param name="sender">Тот, от кого исходит действие(сама кнопка).</param>
-        /// <param name="e"></param>
+        /// <param name="sender">Тот, от кого исходит действие(сам объект кнопки).</param>
+        /// <param name="e">Дополнительная информация о событии.</param>
         private void btnCreate_Click(object sender, RoutedEventArgs e) 
         {
             try
@@ -28,15 +28,15 @@ namespace Rectangle
                 double x = double.Parse(txtX.Text);
                 double y = double.Parse(txtY.Text);
 
-                figure = new Rectangle(a, b, x, y); // Создаем новый объект GeometricFigure
+                rectangle = new Rectangle(a, b, x, y); // Создаем новый объект GeometricFigure
 
                 // Обновляем представление прямоугольника на Canvas
-                Canvas.SetLeft(rect, figure.X);
-                Canvas.SetTop(rect, figure.Y);
-                rect.Width = figure.SideA;
-                rect.Height = figure.SideB;
+                Canvas.SetLeft(rect, rectangle.X);
+                Canvas.SetTop(rect, rectangle.Y);
+                rect.Width = rectangle.SideA;
+                rect.Height = rectangle.SideB;
 
-                txtInfo.Text = $"Площадь: {figure.CalculateArea():F2}   |   Периметр: {figure.CalculatePerimeter():F2}"; // Отображаем площадь и периметр
+                txtInfo.Text = $"Площадь: {rectangle.CalculateArea():F2}   |   Периметр: {rectangle.CalculatePerimeter():F2}"; // Отображаем площадь и периметр
             }
             catch (Exception ex)
             {
