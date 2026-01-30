@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GeometricFigureApp\GeometricFigureApp.csproj" />
     <ProjectReference Include="..\Lab Work 1 - Class\GeometricFigureApp.csproj" />
   </ItemGroup>
 
