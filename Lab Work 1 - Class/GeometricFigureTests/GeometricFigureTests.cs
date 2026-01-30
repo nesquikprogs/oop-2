@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rectangle;  
+using Rectangle;
+using System.Xml.Serialization;
 
 namespace GeometricFigureTests
 {
@@ -41,6 +42,23 @@ namespace GeometricFigureTests
 
         #endregion
 
+        #region Свойство SideA
+
+        /// <summary>
+        /// Тест для проверки установки свойством корректного значения стороны A
+        /// </summary>
+        [TestMethod]
+        public void SideA_CorrectcValue_SetA()
+        {
+            // Arrang 
+            var rectangle = new Rectangle.Rectangle(4.0, 4.0, 0, 0);
+            // Act
+            rectangle.SideA = 6;
+            // Assert
+            Assert.AreEqual(6, rectangle.SideA);
+        }
+
+
         /// <summary>
         /// Тест для проверки выбрасывания исключения при установке некорректного значения стороны A.
         /// </summary>
@@ -52,8 +70,26 @@ namespace GeometricFigureTests
             // Assert
             Assert.ThrowsException<ArgumentException>(
                 () => rectangle.SideA = -5,
-                "Свойство не должно принимать нулевое или отрицательное значение"
+                "Свойство должно выбрасывать ArgumentException при некорректном значении стороны A"
                 );
+        }
+
+        #endregion
+
+        #region Свойство SideB
+
+        /// <summary>
+        /// Тест для проверки установки свойством корректного значения стороны B
+        /// </summary>
+        [TestMethod]
+        public void SideB_CorrectcValue_SetB()
+        {
+            // Arrang 
+            var rectangle = new Rectangle.Rectangle(4.0, 4.0, 0, 0);
+            // Act
+            rectangle.SideB = 6;
+            // Assert
+            Assert.AreEqual(6, rectangle.SideB);
         }
 
         /// <summary>
@@ -67,9 +103,11 @@ namespace GeometricFigureTests
             // Assert
             Assert.ThrowsException<ArgumentException>(
                 () => rectangle.SideB = 0,
-                "Свойство не должно принимать нулевое или отрицательное значение"
+                "Свойство должно выбрасывать ArgumentException при некорректном значении стороны B"
                 );
         }
+
+        #endregion
 
         #region Методы
 
