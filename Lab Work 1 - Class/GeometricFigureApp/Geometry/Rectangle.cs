@@ -46,13 +46,10 @@ namespace Rectangle
         /// </exception>
         public Rectangle(double sideA, double sideB, double x, double y)
         {
-            if (sideA <= 0 || sideB <= 0)
-                throw new ArgumentException("Стороны должны быть положительными числами.");
-
-            _sideA = sideA;
-            _sideB = sideB;
-            _x = x;
-            _y = y;
+            SideA = sideA;
+            SideB = sideB;
+            X = x;
+            Y = y;
         }
 
         #endregion
@@ -101,7 +98,12 @@ namespace Rectangle
         public double X // Свойство для координаты X
         {
             get => _x; // Геттер
-            set => _x = value; // Сеттер
+            set // Сеттер
+            {
+                if (value < 0)
+                    throw new ArgumentException("Координата не должна быть меньше 0");
+                _x = value;
+            }
         }
 
         /// <summary>
@@ -110,7 +112,12 @@ namespace Rectangle
         public double Y // Свойство для координаты Y
         {
             get => _y; // Геттер
-            set => _y = value; // Сеттер
+            set // Сеттер
+            {
+                if (value < 0)
+                    throw new ArgumentException("Координата не должна быть меньше 0");
+                _y = value; 
+            }
         }
 
         #endregion
@@ -147,6 +154,5 @@ namespace Rectangle
         }
 
         #endregion
-
     }
 }
