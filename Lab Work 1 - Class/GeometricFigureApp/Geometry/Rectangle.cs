@@ -97,7 +97,7 @@ namespace Rectangle
         /// </summary>
         public double X // Свойство для координаты X
         {
-            get => _x; // Геттер
+            get => _x; // Геттерь
             set // Сеттер
             {
                 if (value < 0)

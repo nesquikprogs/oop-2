@@ -13,6 +13,7 @@ namespace Rectangle
             InitializeComponent();
         }
 
+
         /// <summary>
         /// Обработчик события нажатия кнопки "Создать фигуру".
         /// </summary>
@@ -28,7 +29,19 @@ namespace Rectangle
                 double x = double.Parse(txtX.Text);
                 double y = double.Parse(txtY.Text);
 
-                rectangle = new Rectangle(a, b, x, y); // Создаем новый объект GeometricFigure
+                // Если объект ещё не создан
+                if (rectangle == null)
+                {
+                    rectangle = new Rectangle(a, b, x, y); // rectangle - это не объект, а ссылка на объект класса
+                }
+                else
+                {
+                    // Если уже существует
+                    rectangle.SideA = a;
+                    rectangle.SideB = b;
+                    rectangle.X = x;
+                    rectangle.Y = y;
+                }
 
                 // Обновляем представление прямоугольника на Canvas
                 Canvas.SetLeft(rect, rectangle.X); // Устанавливаем позицию по X
@@ -43,5 +56,7 @@ namespace Rectangle
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning); // Показываем сообщение об ошибке
             }
         }
+
+        // todo: сделать конспект по графическому изображению агрегации и композиции - OK
     }
 }
