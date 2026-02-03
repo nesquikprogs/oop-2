@@ -75,5 +75,38 @@ namespace DatabaseLab.Models
             }
         }
 
+        // Поиск по имени 
+        public List<Student> SearchByName(string name)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string searchQuery = "SELECT * FROM Students WHERE Name LIKE @Name;";
+                return connection.Query<Student>(searchQuery, new { Name = "%" + name + "%" }).AsList();
+            }
+        }
+
+        // Сортировка по возрасту 
+        public List<Student> SortByAge()
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string sortQuery = "SELECT * FROM Students ORDER BY Age ASC;";
+                return connection.Query<Student>(sortQuery).AsList();
+            }
+        }
+
+        // Проверка данных 
+        public bool StudentExists(int id)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string checkQuery = "SELECT COUNT(*) FROM Students WHERE ID = @ID;";
+                int count = connection.ExecuteScalar<int>(checkQuery, new { ID = id });
+                return count > 0;
+            }
+        }
     }
 }
