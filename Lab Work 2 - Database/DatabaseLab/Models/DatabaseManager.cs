@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Windows; // Для MessageBox
+using DatabaseLab.Interfaces; // Для интерфейса
 
 namespace DatabaseLab.Models
 {
-    public class DatabaseManager
+    public class DatabaseManager : IStudentRepository
     {
         private const string FilePath = "students.json";
-
         private List<Student> _students = new List<Student>();
         private int _nextId = 1;
 
@@ -22,23 +23,21 @@ namespace DatabaseLab.Models
         {
             if (!File.Exists(FilePath))
             {
-                SaveToFile(); 
+                SaveToFile();
                 return;
             }
-
             try
             {
                 string json = File.ReadAllText(FilePath);
                 var loaded = JsonSerializer.Deserialize<List<Student>>(json) ?? new List<Student>();
-
                 _students = loaded;
                 _nextId = _students.Any() ? _students.Max(s => s.Id) + 1 : 1;
             }
             catch (Exception ex)
-            { 
+            {
                 _students.Clear();
                 _nextId = 1;
-                Console.WriteLine("Ошибка чтения файла: " + ex.Message);
+                MessageBox.Show("Ошибка чтения файла: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -51,7 +50,7 @@ namespace DatabaseLab.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка записи файла: " + ex.Message);
+                MessageBox.Show("Ошибка записи файла: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -64,7 +63,7 @@ namespace DatabaseLab.Models
 
         public List<Student> GetAllStudents()
         {
-            return new List<Student>(_students); 
+            return new List<Student>(_students);
         }
 
         public void UpdateStudent(Student updated)
@@ -94,7 +93,6 @@ namespace DatabaseLab.Models
         {
             if (string.IsNullOrWhiteSpace(searchText))
                 return GetAllStudents();
-
             searchText = searchText.Trim().ToLower();
             return _students
                 .Where(s => s.Name.ToLower().Contains(searchText))
@@ -106,11 +104,6 @@ namespace DatabaseLab.Models
             return _students
                 .OrderBy(s => s.Age)
                 .ToList();
-        }
-
-        public bool StudentExists(int id)
-        {
-            return _students.Any(s => s.Id == id);
         }
     }
 }

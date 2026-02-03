@@ -9,24 +9,30 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <TextBox x:Name="txtName"   Width="180" Margin="5"/>
-            <TextBox x:Name="txtAge"    Width="60"  Margin="5"/>
-            <TextBox x:Name="txtGrade"  Width="70"  Margin="5"/>
-            <TextBox x:Name="txtEmail"  Width="200" Margin="5"/>
-            <Button Content="Добавить"  Width="80" Margin="5" Click="Add_Click"/>
-            <Button Content="Изменить"  Width="80" Margin="5" Click="Update_Click"/>
-            <Button Content="Удалить"   Width="80" Margin="5" Click="Delete_Click"/>
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="180" Margin="5"/>
+            <TextBox Text="{Binding AgeText, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="5"/>
+            <TextBox Text="{Binding GradeText, UpdateSourceTrigger=PropertyChanged}" Width="70" Margin="5"/>
+            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="5"/>
+            <Button Content="Добавить" Width="80" Margin="5" Click="Add_Click"/>
+            <Button Content="Изменить" Width="80" Margin="5" Click="Update_Click"/>
+            <Button Content="Удалить" Width="80" Margin="5" Click="Delete_Click"/>
         </StackPanel>
-
         <DataGrid x:Name="dgStudents" Grid.Row="1" Margin="10"
-                  AutoGenerateColumns="True"
+                  ItemsSource="{Binding Students}"
+                  AutoGenerateColumns="False"
                   IsReadOnly="True"
-                  SelectionChanged="dgStudents_SelectionChanged"/>
-
+                  SelectionChanged="dgStudents_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Возраст" Binding="{Binding Age}" Width="80"/>
+                <DataGridTextColumn Header="Оценка" Binding="{Binding Grade, StringFormat=F1}" Width="80"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10">
-            <TextBox x:Name="txtSearch" Width="200" Margin="5"/>
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="5"/>
             <Button Content="Поиск по имени" Width="110" Margin="5" Click="Search_Click"/>
             <Button Content="Сорт. по возрасту" Width="140" Margin="5" Click="Sort_Click"/>
             <Button Content="Обновить" Width="80" Margin="5" Click="Refresh_Click"/>
