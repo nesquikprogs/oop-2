@@ -31,5 +31,49 @@ namespace DatabaseLab.Models
             }
         }
 
+        // Добавление данных
+        public void AddStudent(Student student)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string insertQuery = "INSERT INTO Students (Name, Age, Grade, Email) VALUES (@Name, @Age, @Grade, @Email);";
+                connection.Execute(insertQuery, student);
+            }
+        }
+
+        // Получение всех данных
+        public List<Student> GetAllStudents()
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string selectQuery = "SELECT * FROM Students;";
+                return connection.Query<Student>(selectQuery).AsList();
+            }
+        }
+
+        // Изменение данных
+        public void UpdateStudent(Student student)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string updateQuery = "UPDATE Students SET Name = @Name, Age = @Age, Grade = @Grade, Email = @Email WHERE ID = @ID;";
+                connection.Execute(updateQuery, student);
+            }
+        }
+
+        // Удаление данных
+        public void DeleteStudent(int id)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string deleteQuery = "DELETE FROM Students WHERE ID = @ID;";
+                connection.Execute(deleteQuery, new { ID = id });
+            }
+        }
+
     }
 }
