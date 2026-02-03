@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DatabaseLab
+namespace Lab_Work_2___Database
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml

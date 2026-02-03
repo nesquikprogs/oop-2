@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DatabaseLab.Properties
+namespace Lab_Work_2___Database.Properties
 {
 
 
