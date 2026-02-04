@@ -66,7 +66,8 @@ class MainWindow {
     + dgStudents_SelectionChanged(sender, e)
 }
 
-MainViewModel --> IStudentRepository: использует
-MainViewModel *-- Student
-MainWindow o-- MainViewModel
+MainViewModel --> IStudentRepository : использует
+MainViewModel --> DatabaseManager : использует
+MainViewModel o-- Student : агрегация
+MainWindow *-- MainViewModel : композиция
 @enduml

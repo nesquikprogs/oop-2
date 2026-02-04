@@ -15,15 +15,27 @@ namespace DatabaseLab.ViewModels
 
         #region Поля
 
+        private string _windowTitle = "База студентов";
+        public string WindowTitle
+        {
+            get => _windowTitle;
+            set
+            {
+                _windowTitle = value;
+                OnPropertyChanged(nameof(WindowTitle));
+            }
+        }
+
+
         /// <summary>
         /// Поле для доступа к репозиторию студентов.
         /// </summary>
         private readonly DatabaseLab.Interfaces.IStudentRepository _db;
 
         /// <summary>
-        /// Свойство для хранения списка студентов.
+        /// Свойство для хранения списка студентов. // доп уточняющий коммент
         /// </summary>
-        public ObservableCollection<Student> Students { get; } = new ObservableCollection<Student>();
+        public ObservableCollection<Student> Students { get; } = new ObservableCollection<Student>(); // Здесь связывается таблица с текущей базой данных Students
 
         /// <summary>
         /// Свойство для хранения текущего студента.
@@ -127,12 +139,34 @@ namespace DatabaseLab.ViewModels
         public MainViewModel()
         {
             _db = new DatabaseLab.Models.DatabaseManager();  // Инициализация менеджера базы данных
-            LoadStudents(); // Загрузка студентов из базы данных
+            
         }
 
         #endregion
 
         #region Методы
+
+        /// <summary>
+        /// Метод указания пути к файлу базы данных.
+        /// </summary>
+        /// <param name="path"></param>
+        public void SetFilePath(string path)
+        {
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                if (_db is DatabaseManager manager)
+                {
+                    manager.SetFilePath(path);
+                    LoadStudents();
+
+                    WindowTitle = $"База студентов — {System.IO.Path.GetFileName(path)}";
+                }
+            }
+        }
+
+
+
+
 
         /// <summary>
         /// Метод для загрузки всех студентов из базы данных в коллекцию Students.

@@ -40,7 +40,7 @@ namespace DatabaseLab.Models
         /// <summary>
         /// Поле с именем файла для хранения данных студентов в формате JSON.
         /// </summary>
-        private const string FileName = "students.json";
+        private string FilePath = "students.json";
 
         /// <summary>
         /// Поле для хранения списка студентов.
@@ -69,18 +69,31 @@ namespace DatabaseLab.Models
         #region Методы
 
         /// <summary>
+        /// Метод для выбора пути к файлу базы данных.
+        /// </summary>
+        /// <param name="path">Путь к файлу.</param>
+        public void SetFilePath(string path)
+        {
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                FilePath = path;
+                LoadFromFile(); 
+            }
+        }
+
+        /// <summary>
         /// Метод для загрузки данных студентов из файла JSON.
         /// </summary>
         private void LoadFromFile()
         {
-            if (!File.Exists(FileName)) // Если файл не существует
+            if (!File.Exists(FilePath)) // Если файл не существует
             {
                 SaveToFile(); // Создаем пустой файл
                 return;
             }
             try
             {
-                string json = File.ReadAllText(FileName); // Читаем содержимое файла
+                string json = File.ReadAllText(FilePath); // Читаем содержимое файла
                 var loadedlList = JsonSerializer.Deserialize<List<Student>>(json) ?? new List<Student>(); // Десериализуем JSON в список студентов (List<Student>)
                 _students = loadedlList;
                 _nextId = _students.Any() ? _students.Max(s => s.Id) + 1 : 1; // Обновляем следующий идентификатор
@@ -101,7 +114,7 @@ namespace DatabaseLab.Models
             try
             {
                 string json = JsonSerializer.Serialize(_students, new JsonSerializerOptions { WriteIndented = true }); // Сериализуем список студентов в JSON
-                File.WriteAllText(FileName, json); // Записываем JSON в файл
+                File.WriteAllText(FilePath, json); // Записываем JSON в файл
             }
             catch (Exception ex)
             {
@@ -185,5 +198,12 @@ namespace DatabaseLab.Models
 
         #endregion
 
+        // сделаать подскахски для полей ввода явными - ready
+        // выбор мия файла json - ready
+        // определить где данные выгружаются в grid - с помощью привязок благодаря использовании коллекции student - ready
+        // проверить отношения между mainviewmodule c mainwondow и interface
+
+        // сделать чтобы все хранилось не в list и в коллекции, а только в коллекции
+        // обновить uml
     }
 }

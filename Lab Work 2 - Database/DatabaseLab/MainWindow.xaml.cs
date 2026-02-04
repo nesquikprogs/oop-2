@@ -2,6 +2,7 @@
 using DatabaseLab.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
 
 namespace DatabaseLab
 {
@@ -16,7 +17,7 @@ namespace DatabaseLab
         /// <summary>
         /// Поле для хранения экземпляра ViewModel главного окна.
         /// </summary>
-        private readonly MainViewModel _vm; // Связь с ViewModel 
+        private readonly MainViewModel _vm; // отношение композиция
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace DatabaseLab
         /// <summary>
         /// Конструктор главного окна.
         /// </summary>
-        public MainWindow()
+        public MainWindow() // Создает MainViewModels
         {
             InitializeComponent();
             _vm = new MainViewModel(); // Инициализация ViewModel
@@ -54,8 +55,8 @@ namespace DatabaseLab
         /// <summary>
         /// Обработчик события клика по кнопке "Help" для отображения краткой справки.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">То, что вызывает событие (сама кнопка).</param>
+        /// <param name="e">Дополнительные аргументы события.</param>
         private void Help_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(
@@ -68,6 +69,42 @@ namespace DatabaseLab
                 MessageBoxButton.OK,
                 MessageBoxImage.Information
             );
+        }
+
+        /// <summary>
+        /// Обработчик события выбора файла для бд.
+        /// </summary>
+        /// <param name="sender">То, что вызывает событие (сама кнопка).</param>
+        /// <param name="e">Дополнительные аргументы события.</param>
+        private void SelectFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "JSON files (*.json)|*.json";
+            ofd.Title = "Выберите файл для базы студентов";
+
+            if (ofd.ShowDialog() == true)
+            {
+                _vm.SetFilePath(ofd.FileName); // Выбираем файл бд
+            }
+        }
+
+        /// <summary>
+        /// Обработчик события клика кнопки "CreateNewFile"
+        /// </summary>
+        /// <param name="sender">То, что вызывает событие (сама кнопка).</param>
+        /// <param name="e">Дополнительные аргументы события.</param>
+        private void CreateNewFile_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+            sfd.Title = "Создать новый файл базы студентов";
+
+            if (sfd.ShowDialog() == true)
+            {
+                string path = sfd.FileName;
+                System.IO.File.WriteAllText(path, "[]"); 
+                _vm.SetFilePath(path);                   
+            }
         }
 
         /// <summary>
