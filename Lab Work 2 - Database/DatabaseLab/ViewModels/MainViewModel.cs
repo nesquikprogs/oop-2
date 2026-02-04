@@ -123,7 +123,7 @@ namespace DatabaseLab.ViewModels
 
         public MainViewModel()
         {
-            _db = new DatabaseManager();  // Создание экземпляра DatabaseManager
+            _db = new DatabaseManager();  // Для работы с файлом
         }
 
         #endregion
