@@ -1,73 +1,60 @@
 @startuml
-interface IStudentRepository {
-    + AddStudent(student: Student)
-    + UpdateStudent(student: Student)
-    + DeleteStudent(id: int)
-    + GetAllStudents(): List<Student>
-    + SearchByName(searchText: string): List<Student>
-    + SortByAge(): List<Student>
-}
 
 class Student {
-    - Id: int
-    - Name: string
-    - Age: int
-    - Grade: int
-    - Email: string
+    +int Id
+    +string Name
+    +int Age
+    +int Grade
+    +string Email
 }
 
 class DatabaseManager {
-    - _students: List<Student>
-    - _nextId: int
-    - FileName: const string
-    + AddStudent(student: Student)
-    + UpdateStudent(student: Student)
-    + DeleteStudent(id: int)
-    + GetAllStudents(): List<Student>
-    + SearchByName(searchText: string): List<Student>
-    + SortByAge(): List<Student>
-    - LoadFromFile()
-    - SaveToFile()
+    -string FilePath
+    +void SetFilePath(path: string)
+    +ObservableCollection<Student> LoadFromFile()
+    +void SaveToFile(students: ObservableCollection<Student>)
 }
 
-DatabaseManager ..|> IStudentRepository: реализует
+interface IStudentRepository {
+    +ObservableCollection<Student> LoadStudents()
+    +void SaveStudents(students: ObservableCollection<Student>)
+}
 
 class MainViewModel {
-    - _db: IStudentRepository
-    - _currentStudent: Student
-    - _searchText: string
-    + Students: ObservableCollection<Student>
-    + CurrentStudent: Student
-    + Name: string
-    + AgeText: string
-    + GradeText: string
-    + Email: string
-    + SearchText: string
-    + AddStudent()
-    + UpdateStudent()
-    + DeleteStudent(student: Student)
-    + Search()
-    + SortByAge()
-    + Refresh()
-    - ValidateCurrentStudent(out error: string): bool
-    - ClearCurrentStudent()
-    + PropertyChanged: event
+    -DatabaseManager _db
+    -Student _currentStudent
+    -string _windowTitle
+    -string _searchText
+
+    +ObservableCollection<Student> Students
+    +Student CurrentStudent
+    +string WindowTitle
+    +string Name
+    +string AgeText
+    +string GradeText
+    +string Email
+    +string SearchText
+
+    +MainViewModel()
+    +void SetFilePath(path: string)
+    +void LoadStudents()
+    +void AddStudent()
+    +void UpdateStudent()
+    +void DeleteStudent(student: Student)
+    +void Search()
+    +void SortByAge()
+    +void Refresh()
 }
 
 class MainWindow {
-    - _vm: MainViewModel
-    + MainWindow()
-    + Add_Click(sender, e)
-    + Update_Click(sender, e)
-    + Delete_Click(sender, e)
-    + Search_Click(sender, e)
-    + Sort_Click(sender, e)
-    + Refresh_Click(sender, e)
-    + dgStudents_SelectionChanged(sender, e)
+    -MainViewModel _vm
+    +MainWindow()
 }
 
 MainViewModel --> IStudentRepository : использует
 MainViewModel --> DatabaseManager : использует
 MainViewModel o-- Student : агрегация
 MainWindow *-- MainViewModel : композиция
+DatabaseManager ..|> IStudentRepository: реализует
+
 @enduml
