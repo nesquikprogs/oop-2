@@ -36,7 +36,7 @@
                 <DataGridTextColumn Header="ID"      Binding="{Binding Id}"      Width="50"/>
                 <DataGridTextColumn Header="Имя"     Binding="{Binding Name}"    Width="200"/>
                 <DataGridTextColumn Header="Возраст" Binding="{Binding Age}"     Width="70"/>
-                <DataGridTextColumn Header="Оценка"  Binding="{Binding Grade, StringFormat=F1}" Width="70"/>
+                <DataGridTextColumn Header="Оценка"  Binding="{Binding Grade}" Width="70"/>
                 <DataGridTextColumn Header="Email"   Binding="{Binding Email}"   Width="*"/>
             </DataGrid.Columns>
         </DataGrid>

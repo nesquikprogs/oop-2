@@ -26,7 +26,7 @@
         /// <summary>
         /// Свойство оценки студента.
         /// </summary>
-        public double Grade { get; set; }
+        public int Grade { get; set; }
 
         /// <summary>
         ///  СВойство электронной почты студента.
