@@ -26,9 +26,13 @@ namespace DatabaseLab.ViewModels
         public ObservableCollection<Student> Students { get; } = new ObservableCollection<Student>();
 
         /// <summary>
-        /// Поле для хранения текущего студента.
+        /// Свойство для хранения текущего студента.
         /// </summary>
-        private Student _currentStudent = new Student();
+        private Student _currentStudent = new Student 
+        { 
+            Age = 0,
+            Grade = 0,
+        };
 
         /// <summary>
         /// Свойство для доступа к текущему студенту.
@@ -62,12 +66,14 @@ namespace DatabaseLab.ViewModels
         /// </summary>
         public string AgeText
         {
-            get => CurrentStudent.Age.ToString(); // Геттер
-            set // Сеттер   
+            get => CurrentStudent.Age == 0 ? "" : CurrentStudent.Age.ToString(); // Геттер
+            set // Сеттер
             {
-                if (int.TryParse(value, out int age)) // Попытка преобразования строки в целое число
-                    CurrentStudent.Age = age; 
-                OnPropertyChanged(nameof(AgeText)); // Уведомление об изменении свойства
+                if (int.TryParse(value, out int age)) // Попытка преобразования строки в int
+                    CurrentStudent.Age = age;
+                else
+                    CurrentStudent.Age = 0; // если пустое или некорректное значение
+                OnPropertyChanged(nameof(AgeText));
             }
         }
 
@@ -77,12 +83,13 @@ namespace DatabaseLab.ViewModels
 
         public string GradeText
         {
-            get => CurrentStudent.Grade.ToString(); // Геттер
+            get => CurrentStudent.Grade == 0 ? "" : CurrentStudent.Grade.ToString(); // Геттер
             set // Сеттер
             {
-                string cleaned = value?.Replace(".", ",") ?? ""; // Подготовка строки для парсинга
-                if (int.TryParse(cleaned, out int grade)) // Попытка преобразования строки в int
-                    CurrentStudent.Grade = grade; 
+                if (int.TryParse(value, out int grade)) // Попытка преобразования строки в int
+                    CurrentStudent.Grade = grade;
+                else
+                    CurrentStudent.Grade = 0; // если пусто, оставляем 0
                 OnPropertyChanged(nameof(GradeText)); // Уведомление об изменении свойства
             }
         }
