@@ -37,6 +37,40 @@ namespace DatabaseLab
         #region Обработчики событий
 
         /// <summary>
+        /// Обработчик события клика по кнопке "About" для отображения информации о разработчике.
+        /// </summary>
+        /// <param name="sender">То, что вызывает событие (сама кнопка).</param>
+        /// <param name="e">Дополнительные аргументы события.</param>
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(
+                "Разработчик: Александров Данил\nГруппа: ВМК-22\nЛабораторная работа: База студентов на C# и WPF",
+                "Сведения о разработчике",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
+        }
+
+        /// <summary>
+        /// Обработчик события клика по кнопке "Help" для отображения краткой справки.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(
+                "Программа позволяет:\n" +
+                "• Добавлять, изменять и удалять студентов\n" +
+                "• Искать студентов по имени\n" +
+                "• Сортировать студентов по возрасту\n" +
+                "Все данные сохраняются в файле students.json.",
+                "Краткая справка",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
+        }
+
+        /// <summary>
         /// Обработчик события клика по кнопке "Add" для добавления нового студента.
         /// </summary>
         /// <param name="sender">То, что вызывает событие (сама кнопка).</param>
