@@ -10,7 +10,28 @@ namespace DatabaseLab.Models
 {
     /// <summary>
     /// Класс для управления базой данных студентов, реализующий интерфейс IStudentRepository. В модели MVVM представляет Model.
+    /// Данные хранятся в файле JSON с именем "students.json".
     /// </summary>
+    /// <remarks>
+    /// Формат файла JSON:
+    /// Файл содержит массив объектов Student. Каждый объект описывает одного студента.
+    /// [
+    ///   {
+    ///     "Id": 1,          // уникальный идентификатор студента (int)
+    ///     "Name": "Александров Данил",  // имя студента (string)
+    ///     "Age": 22,        // возраст студента (int)
+    ///     "Grade": 5,       // оценка студента, целое число от 2 до 5 (int)
+    ///     "Email": "Nevsquik.2301@mail.ru"  // email студента (string)
+    ///   },
+    ///   {
+    ///     "Id": 2,
+    ///     "Name": "Рычков Родион",
+    ///     "Age": 22,
+    ///     "Grade": 5,
+    ///     "Email": "wuffluv@mail.ru"
+    ///   }
+    /// ]
+    /// </remarks>
     public class DatabaseManager : IStudentRepository
     {
 

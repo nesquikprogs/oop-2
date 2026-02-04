@@ -15,14 +15,21 @@
 
         <!-- Ввод -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"   Width="190" Margin="0,0,6,0"/>
-            <TextBox Text="{Binding AgeText,UpdateSourceTrigger=PropertyChanged}"  Width="70"  Margin="0,0,6,0"/>
-            <TextBox Text="{Binding GradeText,UpdateSourceTrigger=PropertyChanged}" Width="80"  Margin="0,0,6,0"/>
-            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"   Width="210" Margin="0,0,12,0"/>
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="190" Margin="0,0,6,0"
+                     ToolTip="Введите имя студента"/>
+            <TextBox Text="{Binding AgeText,UpdateSourceTrigger=PropertyChanged}" Width="70" Margin="0,0,6,0"
+                     ToolTip="Введите возраст студента (целое число)"/>
+            <TextBox Text="{Binding GradeText,UpdateSourceTrigger=PropertyChanged}" Width="80" Margin="0,0,6,0"
+                     ToolTip="Введите оценку студента (целое число от 2 до 5)"/>
+            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Width="210" Margin="0,0,12,0"
+                     ToolTip="Введите email студента (опционально)"/>
 
-            <Button Content="Добавить"   Width="85" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Add_Click"/>
-            <Button Content="Изменить"   Width="85" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Update_Click"/>
-            <Button Content="Удалить"    Width="85" Background="#EF4444" Foreground="White" Click="Delete_Click"/>
+            <Button Content="Добавить" Width="85" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Add_Click"
+                    ToolTip="Нажмите, чтобы добавить нового студента"/>
+            <Button Content="Изменить" Width="85" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Update_Click"
+                    ToolTip="Нажмите, чтобы изменить данные выбранного студента"/>
+            <Button Content="Удалить" Width="85" Background="#EF4444" Foreground="White" Click="Delete_Click"
+                    ToolTip="Нажмите, чтобы удалить выбранного студента"/>
         </StackPanel>
 
         <!-- Таблица -->
@@ -30,23 +37,28 @@
                   ItemsSource="{Binding Students}"
                   AutoGenerateColumns="False" IsReadOnly="True"
                   SelectionChanged="dgStudents_SelectionChanged"
-                  Background="White" BorderBrush="#D1D5DB" BorderThickness="1">
+                  Background="White" BorderBrush="#D1D5DB" BorderThickness="1"
+                  ToolTip="Список всех студентов. Выберите студента для редактирования или удаления.">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID"      Binding="{Binding Id}"      Width="50"/>
-                <DataGridTextColumn Header="Имя"     Binding="{Binding Name}"    Width="200"/>
-                <DataGridTextColumn Header="Возраст" Binding="{Binding Age}"     Width="70"/>
-                <DataGridTextColumn Header="Оценка"  Binding="{Binding Grade}" Width="70"/>
-                <DataGridTextColumn Header="Email"   Binding="{Binding Email}"   Width="*"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Возраст" Binding="{Binding Age}" Width="70"/>
+                <DataGridTextColumn Header="Оценка" Binding="{Binding Grade}" Width="70"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Поиск -->
         <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="220" Margin="0,0,10,0"/>
-            <Button Content="Поиск"      Width="100" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Search_Click"/>
-            <Button Content="Сорт. по возрасту" Width="140" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Sort_Click"/>
-            <Button Content="Обновить"   Width="90" Background="#6B7280" Foreground="White" Click="Refresh_Click"/>
+            <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="220" Margin="0,0,10,0"
+                     ToolTip="Введите имя для поиска студента"/>
+            <Button Content="Поиск" Width="100" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Search_Click"
+                    ToolTip="Нажмите для поиска студентов по имени"/>
+            <Button Content="Сорт. по возрасту" Width="140" Margin="0,0,6,0" Background="#3B82F6" Foreground="White" Click="Sort_Click"
+                    ToolTip="Сортирует список студентов по возрасту"/>
+            <Button Content="Обновить" Width="90" Background="#6B7280" Foreground="White" Click="Refresh_Click"
+                    ToolTip="Обновляет список студентов и очищает фильтры"/>
         </StackPanel>
     </Grid>
 </Window>
