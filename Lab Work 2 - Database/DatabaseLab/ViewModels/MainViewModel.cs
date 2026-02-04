@@ -2,60 +2,52 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Linq;
 using System;
-using System.Collections.Generic;
 
 namespace DatabaseLab.ViewModels
 {
     /// <summary>
-    /// Класс ViewModel для главного окна приложения. В модели MVVM представляет ViewModel. 
+    /// ViewModel для главного окна. Хранит базу данных студентов только в ObservableCollection.
     /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
+        #region Поля и свойства
 
-        #region Поля
-
+        /// <summary>
+        /// Поле заголовка окна.
+        /// </summary>
         private string _windowTitle = "База студентов";
+
+        /// <summary>
+        /// Свойство заголовка окна.
+        /// </summary>
         public string WindowTitle
         {
             get => _windowTitle;
-            set
-            {
-                _windowTitle = value;
-                OnPropertyChanged(nameof(WindowTitle));
-            }
+            set { _windowTitle = value; OnPropertyChanged(nameof(WindowTitle)); }
         }
 
-
         /// <summary>
-        /// Поле для доступа к репозиторию студентов.
+        /// Коллекция студентов.
         /// </summary>
-        private readonly DatabaseLab.Interfaces.IStudentRepository _db;
+        public ObservableCollection<Student> Students { get; private set; }
+            = new ObservableCollection<Student>();
 
         /// <summary>
-        /// Свойство для хранения списка студентов. // доп уточняющий коммент
+        /// Поле текущего студента для добавления/редактирования.
         /// </summary>
-        public ObservableCollection<Student> Students { get; } = new ObservableCollection<Student>(); // Здесь связывается таблица с текущей базой данных Students
+        private Student _currentStudent = new Student { Age = 0, Grade = 0 };
 
         /// <summary>
-        /// Свойство для хранения текущего студента.
-        /// </summary>
-        private Student _currentStudent = new Student 
-        { 
-            Age = 0,
-            Grade = 0,
-        };
-
-        /// <summary>
-        /// Свойство для доступа к текущему студенту.
+        /// Свойство текущего студента для добавления/редактирования.
         /// </summary>
         public Student CurrentStudent
         {
-            get => _currentStudent; // Геттер
-            set // Сеттер
+            get => _currentStudent;
+            set
             {
                 _currentStudent = value ?? new Student();
-                // Обновление всех связанных свойств
                 OnPropertyChanged(nameof(CurrentStudent));
                 OnPropertyChanged(nameof(Name));
                 OnPropertyChanged(nameof(AgeText));
@@ -65,242 +57,257 @@ namespace DatabaseLab.ViewModels
         }
 
         /// <summary>
-        /// Свойство для доступа к имени текущего студента.
+        /// Свойство имени текущего студента.
         /// </summary>
         public string Name
         {
-            get => CurrentStudent.Name; // Геттер
-            set { CurrentStudent.Name = value ?? ""; OnPropertyChanged(nameof(Name)); } // Сеттер
+            get => CurrentStudent.Name;
+            set { CurrentStudent.Name = value ?? ""; OnPropertyChanged(nameof(Name)); }
         }
 
         /// <summary>
-        /// Свойство для доступа к возрасту текущего студента в текстовом формате.
+        /// Свойство возраста текущего студента в текстовом формате.
         /// </summary>
         public string AgeText
         {
-            get => CurrentStudent.Age == 0 ? "" : CurrentStudent.Age.ToString(); // Геттер
-            set // Сеттер
+            get => CurrentStudent.Age == 0 ? "" : CurrentStudent.Age.ToString();
+            set
             {
-                if (int.TryParse(value, out int age)) // Попытка преобразования строки в int
-                    CurrentStudent.Age = age;
-                else
-                    CurrentStudent.Age = 0; // если пустое или некорректное значение
+                if (int.TryParse(value, out int age)) CurrentStudent.Age = age;
+                else CurrentStudent.Age = 0;
                 OnPropertyChanged(nameof(AgeText));
             }
         }
 
         /// <summary>
-        /// Свойство для доступа к оценке текущего студента в текстовом формате.
+        /// Свойство оценки текущего студента в текстовом формате.
         /// </summary>
-
         public string GradeText
         {
-            get => CurrentStudent.Grade == 0 ? "" : CurrentStudent.Grade.ToString(); // Геттер
-            set // Сеттер
+            get => CurrentStudent.Grade == 0 ? "" : CurrentStudent.Grade.ToString();
+            set
             {
-                if (int.TryParse(value, out int grade)) // Попытка преобразования строки в int
-                    CurrentStudent.Grade = grade;
-                else
-                    CurrentStudent.Grade = 0; // если пусто, оставляем 0
-                OnPropertyChanged(nameof(GradeText)); // Уведомление об изменении свойства
+                if (int.TryParse(value, out int grade)) CurrentStudent.Grade = grade;
+                else CurrentStudent.Grade = 0;
+                OnPropertyChanged(nameof(GradeText));
             }
         }
 
         /// <summary>
-        /// Свойство для доступа к email текущего студента.
+        /// Свойство электронной почты текущего студента.
         /// </summary>
         public string Email
         {
-            get => CurrentStudent.Email; // Геттер
-            set { CurrentStudent.Email = value?.Trim() ?? ""; OnPropertyChanged(nameof(Email)); } // Сеттер
+            get => CurrentStudent.Email;
+            set { CurrentStudent.Email = value?.Trim() ?? ""; OnPropertyChanged(nameof(Email)); }
         }
 
         /// <summary>
-        /// Поле для хранения текста поиска, который заведомо пуст
+        /// Свойство текста поиска студентов по имени.
         /// </summary>
         private string _searchText = "";
-
-        /// <summary>
-        /// Свойство для доступа к тексту поиска.
-        /// </summary>
         public string SearchText
         {
-            get => _searchText; // Геттер
-            set { _searchText = value; OnPropertyChanged(nameof(SearchText)); } // Сеттер
+            get => _searchText;
+            set { _searchText = value; OnPropertyChanged(nameof(SearchText)); }
         }
+
+        /// <summary>
+        /// Поле для управления базой данных.
+        /// </summary>
+        private readonly DatabaseManager _db;
 
         #endregion
 
         #region Конструктор
 
-        /// <summary>
-        /// Конструктор класса MainViewModel.
-        /// </summary>
         public MainViewModel()
         {
-            _db = new DatabaseLab.Models.DatabaseManager();  // Инициализация менеджера базы данных
-            
+            _db = new DatabaseManager();  // Создание экземпляра DatabaseManager
         }
 
         #endregion
 
-        #region Методы
+        #region Методы работы с файлом
 
         /// <summary>
-        /// Метод указания пути к файлу базы данных.
+        /// Метод установки пути к файлу базы данных и загрузки студентов из него.
         /// </summary>
-        /// <param name="path"></param>
         public void SetFilePath(string path)
         {
-            if (!string.IsNullOrWhiteSpace(path))
-            {
-                if (_db is DatabaseManager manager)
-                {
-                    manager.SetFilePath(path);
-                    LoadStudents();
+            if (string.IsNullOrWhiteSpace(path)) return;
 
-                    WindowTitle = $"База студентов — {System.IO.Path.GetFileName(path)}";
-                }
-            }
+            _db.SetFilePath(path);
+            LoadStudents();
+            WindowTitle = $"База студентов — {System.IO.Path.GetFileName(path)}";
         }
 
-
-
-
-
         /// <summary>
-        /// Метод для загрузки всех студентов из базы данных в коллекцию Students.
+        /// Метод загрузки коллекции студентов из файла
         /// </summary>
-        private void LoadStudents()
+        public void LoadStudents()
         {
-            Students.Clear(); // Очистка текущей коллекции студентов
-            foreach (var s in _db.GetAllStudents()) // Получение всех студентов из базы данных (из list)
-                Students.Add(s); // Добавление каждого студента в коллекцию 
+            Students.Clear();
+            var loaded = _db.LoadFromFile(); // возвращает ObservableCollection<Student>
+            foreach (var s in loaded)
+                Students.Add(s);
         }
 
         /// <summary>
-        /// Мецод для добавления нового студента.
+        /// Метод сохранения коллекции студентов в файл
+        /// </summary>
+        private void SaveStudents()
+        {
+            _db.SaveToFile(Students);
+        }
+
+        #endregion
+
+        #region Методы CRUD
+
+        /// <summary>
+        /// Метод добавления нового студента.
         /// </summary>
         public void AddStudent()
         {
-            if (!ValidateCurrentStudent(out string error)) // Валидация текущего студента(дополнительно возвращает ошибку)
+            if (!ValidateCurrentStudent(out string error))
             {
-                MessageBox.Show(error, "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning); // Показ сообщения об ошибке
+                MessageBox.Show(error, "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            _db.AddStudent(CurrentStudent); // Добавление текущего студента в базу данных
-            LoadStudents(); // Перезагрузка списка студентов в коллекцию
-            ClearCurrentStudent(); // Очистка текущего студента
+            CurrentStudent.Id = GetNextId();
+            Students.Add(new Student
+            {
+                Id = CurrentStudent.Id,
+                Name = CurrentStudent.Name,
+                Age = CurrentStudent.Age,
+                Grade = CurrentStudent.Grade,
+                Email = CurrentStudent.Email
+            });
+
+            SaveStudents();
+            ClearCurrentStudent();
         }
 
         /// <summary>
-        /// Метод для обновления информации о текущем студенте.
+        /// Метод обновления информации о студенте.
         /// </summary>
         public void UpdateStudent()
         {
-            if (CurrentStudent.Id == 0) return; // Проверка, что студент существует
+            if (CurrentStudent.Id == 0) return;
 
-            if (!ValidateCurrentStudent(out string error)) // Валидация текущего студента(дополнительно возвращает ошибку)
+            if (!ValidateCurrentStudent(out string error))
             {
-                MessageBox.Show(error, "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning); // Показ сообщения об ошибке
+                MessageBox.Show(error, "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            _db.UpdateStudent(CurrentStudent); // Обновление информации о текущем студенте в базе данных
-            LoadStudents(); // Перезагрузка списка студентов в коллекцию
-            ClearCurrentStudent(); // Очистка текущего студента
+            var student = Students.FirstOrDefault(s => s.Id == CurrentStudent.Id);
+            if (student != null)
+            {
+                student.Name = CurrentStudent.Name;
+                student.Age = CurrentStudent.Age;
+                student.Grade = CurrentStudent.Grade;
+                student.Email = CurrentStudent.Email;
+            }
+
+            SaveStudents();
+            ClearCurrentStudent();
         }
 
         /// <summary>
-        /// Метод для удаления студента.
+        /// Метод удаления студента.
         /// </summary>
-        /// <param name="student">Объект студента.</param>
+        /// <param name="student">Объект нужного студента</param>
         public void DeleteStudent(Student student)
         {
-            if (student == null) return; // Проверка, что студент не null
+            if (student == null) return;
 
             var result = MessageBox.Show($"Удалить студента {student.Name}?", "Подтверждение",
-                MessageBoxButton.YesNo, MessageBoxImage.Question); // Подтверждение удаления студента
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-            if (result == MessageBoxResult.Yes) // Если пользователь подтвердил удаление
+            if (result == MessageBoxResult.Yes)
             {
-                _db.DeleteStudent(student.Id); // Удаление студента из базы данных
-                LoadStudents(); // Перезагрузка списка студентов в коллекцию
-                if (CurrentStudent.Id == student.Id)
-                    ClearCurrentStudent(); // Очистка текущего студента, если он был удален из коллекции
+                Students.Remove(student);
+                SaveStudents();
+                if (CurrentStudent.Id == student.Id) ClearCurrentStudent();
             }
         }
 
+        #endregion
+
+        #region Поиск и сортировка
+
         /// <summary>
-        /// Метод для поиска студентов по имени.
+        /// Метод поиска студентов по имени.
         /// </summary>
         public void Search()
         {
-            Students.Clear(); // Очистка текущей коллекции студентов
-            var results = _db.SearchByName(SearchText); // Поиск студентов по имени в базе данных
-            foreach (var s in results)
-                Students.Add(s); // Добавление найденных студентов в коллекцию
+            var filtered = Students
+                .Where(s => s.Name.ToLower().Contains(SearchText.Trim().ToLower()))
+                .ToList();
+
+            Students.Clear();
+            foreach (var s in filtered) Students.Add(s);
         }
 
         /// <summary>
-        /// Метод для сортировки студентов по возрасту.
+        /// Метод сортировки студентов по возрасту.
         /// </summary>
         public void SortByAge()
         {
-            Students.Clear(); // Очистка текущей коллекции студентов
-            var sorted = _db.SortByAge();  // Получение отсортированного списка студентов по возрасту из базы данных
-            foreach (var s in sorted)
-                Students.Add(s); // Добавление отсортированных студентов в коллекцию
+            var sorted = Students.OrderBy(s => s.Age).ToList();
+            Students.Clear();
+            foreach (var s in sorted) Students.Add(s);
         }
 
         /// <summary>
-        ///  Метод для сброса поиска и перезагрузки всех студентов.
+        /// Метод сброса поиска и обновления списка студентов.
         /// </summary>
-        public void Refresh() 
+        public void Refresh()
         {
-            SearchText = ""; // Сброс текста поиска
-            LoadStudents(); // Перезагрузка всех студентов из базы данных
+            SearchText = "";
+            LoadStudents();
         }
 
+        #endregion
+
+        #region Вспомогательные методы
+
         /// <summary>
-        /// Метод для валидации текущего студента.
+        /// Метод валидации данных текущего студента.
         /// </summary>
-        /// <param name="error">Текст ошибки при неудачной валидации.</param>
-        /// <returns>Факт непройденной или нет валидации и текст ошибки в error</returns>
+        /// <param name="error">Текст ошибки.</param>
+        /// <returns>Результат валидации.</returns>
         private bool ValidateCurrentStudent(out string error)
         {
-            error = ""; // Инициализация текста ошибки
-
-            if (string.IsNullOrWhiteSpace(CurrentStudent.Name)) // Проверка, что имя не пустое
+            error = "";
+            if (string.IsNullOrWhiteSpace(CurrentStudent.Name))
             {
                 error = "Имя обязательно";
                 return false;
             }
-
-            if (CurrentStudent.Age <= 0) // Проверка, что возраст положительный
+            if (CurrentStudent.Age <= 0)
             {
                 error = "Возраст должен быть положительным";
                 return false;
             }
-
-            if (CurrentStudent.Grade < 2 || CurrentStudent.Grade > 5) // Проверка, что оценка в диапазоне от 2 до 5
+            if (CurrentStudent.Grade < 2 || CurrentStudent.Grade > 5)
             {
                 error = "Оценка должна быть от 2 до 5";
                 return false;
             }
-
-            if (!string.IsNullOrEmpty(CurrentStudent.Email) && !CurrentStudent.Email.Contains("@")) // Проверка корректности email
+            if (!string.IsNullOrEmpty(CurrentStudent.Email) && !CurrentStudent.Email.Contains("@"))
             {
                 error = "Некорректный email";
                 return false;
             }
-
-            return true; // Валидация пройдена успешно
+            return true;
         }
 
         /// <summary>
-        /// Метод для очистки текущего студента.
+        /// Метод очистки данных текущего студента.
         /// </summary>
         private void ClearCurrentStudent()
         {
@@ -308,22 +315,23 @@ namespace DatabaseLab.ViewModels
         }
 
         /// <summary>
-        /// Событие для уведомления об изменении свойства.
+        /// Метод получения следующего уникального идентификатора для нового студента.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged; // Обязательное объявление события
-
-        /// <summary>
-        /// Метод для вызова события PropertyChanged.
-        /// </summary>
-        /// <param name="propertyName">Имя string измененного свойства.</param>
-        protected virtual void OnPropertyChanged(string propertyName)
+        /// <returns></returns>
+        private int GetNextId()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); // Вызов события
+            return Students.Any() ? Students.Max(s => s.Id) + 1 : 1;
         }
 
         #endregion
 
-        // todo:
-
+        /// <summary>
+        /// Свойства и методы для реализации INotifyPropertyChanged.
+        /// </summary>
+        #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        #endregion
     }
 }
