@@ -31,6 +31,9 @@ namespace DatabaseLab
             InitializeComponent();
             _vm = new MainViewModel(); // Инициализация ViewModel
             DataContext = _vm; // Установка контекста для Binding
+                               // DataContex определяет контекст, в котором будет поле Student к которому будет привязано содержимое таблица
+                               //< DataGrid x: Name = "dgStudents""
+                               //ItemsSource = "{Binding Students}"
         }
 
         #endregion

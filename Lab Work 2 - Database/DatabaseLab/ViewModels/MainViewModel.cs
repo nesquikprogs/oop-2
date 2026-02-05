@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Linq;
 using System;
+using System.Windows.Controls;
 
 namespace DatabaseLab.ViewModels
 {
@@ -19,6 +20,8 @@ namespace DatabaseLab.ViewModels
         /// </summary>
         private string _windowTitle = "База студентов";
 
+
+
         /// <summary>
         /// Свойство заголовка окна.
         /// </summary>
@@ -32,7 +35,7 @@ namespace DatabaseLab.ViewModels
         /// Коллекция студентов.
         /// </summary>
         public ObservableCollection<Student> Students { get; private set; }
-            = new ObservableCollection<Student>();
+            = new();
 
         /// <summary>
         /// Поле текущего студента для добавления/редактирования.
@@ -124,6 +127,7 @@ namespace DatabaseLab.ViewModels
         public MainViewModel()
         {
             _db = new DatabaseManager();  // Для работы с файлом
+
         }
 
         #endregion
@@ -150,7 +154,14 @@ namespace DatabaseLab.ViewModels
             Students.Clear();
             var loaded = _db.LoadFromFile(); // возвращает ObservableCollection<Student>
             foreach (var s in loaded)
-                Students.Add(s);
+                Students.Add(s); // Из-за привязки datacontext переменную Students пересоздавать нельзя, но элементы в неё добавлять можно
+                                 // и проходясь по ней добавлялять элементы в Students, то есть нам нужна отдельная коллекция loaded
+                                 // чтобы добавлять элементы в коллекцию Students
+
+            string s1 = "123";
+            string s2 = "234";
+
+            s1 = s2;
         }
 
         /// <summary>
